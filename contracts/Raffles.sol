@@ -149,7 +149,7 @@ interface Staking {
     function removePoints(address _to, uint val) external;
 }
 
-contract RaffleAuction is Ownable {
+contract Raffles is Ownable {
     mapping(address => uint256) public points; // this will we get leter.
     address public nft;
     address public staking;
@@ -275,5 +275,23 @@ contract RaffleAuction is Ownable {
             raffle.participants[winner],
             raffle.nftId
         );
+    }
+
+    function getParticipants(
+        uint _raffleId
+    ) external view returns (address[] memory) {
+        require(_raffleId >= 0, "Invalid raffle ID");
+
+        Raffle storage raffle = raffles[_raffleId];
+
+        return raffle.participants;
+    }
+
+    function getMyTickets(uint _raffleId) external view returns (uint) {
+        require(_raffleId >= 0, "Invalid raffle ID");
+
+        Raffle storage raffle = raffles[_raffleId];
+
+        return raffle.ticketsPerUser[msg.sender];
     }
 }
